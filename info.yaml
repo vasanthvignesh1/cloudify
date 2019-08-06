@@ -1,0 +1,163 @@
+nodes:
+  - name: vm
+    width: 210
+    height: 230
+    x: 590
+    'y': 40
+    uiType: Compute
+    type: cloudify.nodes.aws.ec2.Instances
+  - name: ami
+    width: 210
+    height: 160
+    x: 820
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.Image
+  - name: ip
+    width: 210
+    height: 160
+    x: 1050
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.ElasticIP
+  - name: nic
+    width: 210
+    height: 160
+    x: 1280
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.Interface
+  - name: security_group_rules
+    width: 210
+    height: 160
+    x: 345
+    'y': 80
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.SecurityGroupRuleIngress
+  - name: security_group
+    width: 240
+    height: 210
+    x: 330
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.SecurityGroup
+  - name: route_public_subnet_internet_gateway
+    width: 210
+    height: 160
+    x: 70
+    'y': 120
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.Route
+  - name: routetable
+    width: 240
+    height: 210
+    x: 55
+    'y': 80
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.RouteTable
+  - name: subnet
+    width: 210
+    height: 160
+    x: 1510
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.Subnet
+  - name: internet_gateway
+    width: 210
+    height: 160
+    x: 1740
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.InternetGateway
+  - name: vpc
+    width: 270
+    height: 260
+    x: 40
+    'y': 40
+    uiType: Node
+    type: cloudify.nodes.aws.ec2.Vpc
+connectors:
+  - source: vm
+    target: ami
+    x1: 795
+    y1: 135
+    x2: 825
+    y2: 115
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: vm
+    target: nic
+    x1: 795
+    y1: 135
+    x2: 1285
+    y2: 115
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: ip
+    target: nic
+    x1: 1255
+    y1: 115
+    x2: 1285
+    y2: 115
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: nic
+    target: security_group
+    x1: 1485
+    y1: 115
+    x2: 335
+    y2: 140
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: nic
+    target: subnet
+    x1: 1485
+    y1: 115
+    x2: 1515
+    y2: 115
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: security_group
+    target: vpc
+    x1: 565
+    y1: 140
+    x2: 45
+    y2: 165
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: route_public_subnet_internet_gateway
+    target: internet_gateway
+    x1: 275
+    y1: 195
+    x2: 1745
+    y2: 115
+    uiType: Connector
+    type: cloudify.relationships.connected_to
+  - source: routetable
+    target: subnet
+    x1: 290
+    y1: 180
+    x2: 1515
+    y2: 115
+    uiType: Connector
+    type: cloudify.relationships.connected_to
+  - source: subnet
+    target: vpc
+    x1: 1715
+    y1: 115
+    x2: 45
+    y2: 165
+    uiType: Connector
+    type: cloudify.relationships.depends_on
+  - source: internet_gateway
+    target: vpc
+    x1: 1945
+    y1: 115
+    x2: 45
+    y2: 165
+    uiType: Connector
+    type: cloudify.relationships.connected_to
+scale: 0
+offset:
+  - 0
+  - 0
